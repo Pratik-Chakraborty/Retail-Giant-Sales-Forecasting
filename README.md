@@ -1,121 +1,201 @@
-# Retail Giant — Sales Forecasting
+# 📊 Retail Sales Forecasting Project
 
-Short description
------------------
-This repository contains data, notebooks, and code used to forecast sales for a large retail chain. The work includes data cleaning, exploratory data analysis (EDA), feature engineering, time-series and machine-learning models, evaluation, and business-oriented inferences.
+## 📌 Overview
 
-Repository layout
------------------
-- data/                — raw and processed datasets (placeholders)
-- notebooks/           — Jupyter notebooks for EDA, experiments, model development
-- src/                 — production-ready scripts and functions
-- models/              — trained model artifacts and versioned model files
-- reports/             — charts, dashboards, summary reports
-- requirements.txt     — Python package dependencies
-- README.md            — this file
+This project focuses on forecasting sales for a global retail business using time series analysis. It involves data preprocessing, feature engineering, segment selection, and applying multiple forecasting techniques to identify the best-performing model.
 
-(Replace placeholder file names above with the actual file names in your repo.)
+---
+
+## 🎯 Objectives
+
+* Forecast future sales accurately
+* Identify the most stable and profitable market segment
+* Compare multiple time series models
+* Select the best model using evaluation metrics
+
+---
+
+## 📂 Dataset
+
+* Total Records: **51,290**
+* Features:
+
+  * Order Date
+  * Segment
+  * Market
+  * Sales
+  * Profit
+
+---
+
+## 🔄 Project Workflow
+
+```
+Raw Data → Data Cleaning → Feature Engineering → Aggregation
+→ Segment Selection → Time Series Creation → Train-Test Split
+→ Model Building → Evaluation → Best Model Selection
+```
+
+---
+
+## 🛠️ Data Preparation
+
+### 1. Feature Engineering
+
+* Created `Market_Segment` by combining Market and Segment
+* Helps in granular analysis
+
+### 2. Date Transformation
+
+* Converted Order Date to **monthly format**
+* Reduces noise and captures trend & seasonality
+
+### 3. Aggregation
+
+* Used pivot table to aggregate profit by:
+
+  * Month
+  * Market Segment
+
+---
+
+## 📊 Segment Selection (CoV Analysis)
+
+* Used **Coefficient of Variation (CoV)**:
+
+```
+CoV = Standard Deviation / Mean
+```
+
+### Insight:
+
+* **APAC_Consumer** had the lowest CoV
+* Indicates high stability and predictability
+
+---
+
+## 📈 Time Series Creation
+
+* Filtered APAC_Consumer segment
+* Aggregated monthly sales
+* Created univariate time series
+
+---
+
+## ✂️ Train-Test Split
+
+* Train Data: First 42 months
+* Test Data: Last 6 months
+
+---
+
+## 🔍 Time Series Decomposition
+
+* Additive Model
+* Multiplicative Model
+
+### Purpose:
+
+* Identify trend
+* Detect seasonality
+* Understand residual patterns
+
+---
+
+## 🤖 Models Implemented
+
+### 🔹 Baseline Models
+
+* Naive Method
+* Simple Average
+* Moving Average
+
+### 🔹 Exponential Smoothing
+
+* Simple Exponential Smoothing (SES)
+* Holt’s Linear Trend Model
+* Holt-Winters Additive
+* Holt-Winters Multiplicative
+
+### 🔹 ARIMA Family Models
+
+* AR (Auto Regression)
+* MA (Moving Average)
+* ARMA
+* ARIMA
+* SARIMA
+
+---
+
+## 📉 Evaluation Metrics
+
+### RMSE (Root Mean Squared Error)
+
+* Penalizes large errors
+
+### MAPE (Mean Absolute Percentage Error)
+
+* Provides percentage-based error
+
+---
+
+## 📊 Model Performance Summary
+
+| Model                       | RMSE     | MAPE      |
+| --------------------------- | -------- | --------- |
+| Naive                       | 12355    | 17.47%    |
+| Simple Average              | 24146    | 34.34%    |
+| Moving Average              | 14756    | 15.82%    |
+| SES                         | 14765    | 15.83%    |
+| Holt’s Method               | 18976    | 34.57%    |
+| **Holt-Winters Additive**   | **8942** | **8.84%** |
+| Holt-Winters Multiplicative | 9976     | 10.12%    |
+| AR                          | 10985    | 13.56%    |
+| MA                          | 23360    | 33.93%    |
+| ARMA                        | 22654    | 32.40%    |
+| ARIMA                       | 22654    | 32.40%    |
+| SARIMA                      | 9617     | 12.88%    |
+
+---
+
+## 🏆 Key Results
+
+* **Best Model (Overall):** Holt-Winters Additive
+* **Best ARIMA-based Model:** SARIMA
+* **Most Stable Segment:** APAC_Consumer
+
+---
+
+## 💡 Key Insights
+
+* Sales exhibit both trend and seasonality
+* Stable segments improve forecasting accuracy
+* Advanced models outperform baseline methods
+
+---
+
+## 🚀 Business Impact
+
+* Improved demand forecasting
+* Better inventory planning
+* Data-driven decision making
+* Revenue optimization
+
+---
+
+## 🧠 Tech Stack
+
+* Python
+* Pandas, NumPy
+* Matplotlib, Seaborn
+* Statsmodels
+* Scikit-learn
 
 
-Process (detailed)
-------------------
-This section documents the data science process used in the project.
+---
 
-1. Data collection
-   - Source(s): (e.g., internal retail DB, CSVs, public datasets)
-   - Key tables/files: sales.csv, stores.csv, calendar.csv, promotions.csv (replace with actual names)
 
-2. Data cleaning & preprocessing
-   - Inspect and handle missing values (imputation, domain-specific filling)
-   - Normalize and standardize columns where needed
-   - Parse and standardize dates and timezones
-   - Remove/flag outliers (e.g., transaction-level anomalies, returns)
-   - Aggregate to appropriate forecasting granularity (daily, weekly, SKU-store level)
+## 🙌 Conclusion
 
-3. Exploratory data analysis (EDA)
-   - Univariate analysis: sales distribution, zero-sales frequency
-   - Time-series decomposition: trend, seasonality, residuals
-   - Group-level patterns: by store, by product category, by region
-   - Promotion and holiday effect visualizations
+This project demonstrates how time series forecasting can be applied to real-world retail data to generate actionable business insights and improve decision-making.
 
-4. Feature engineering
-   - Date features: day-of-week, month, week-of-year, holidays
-   - Lag features: sales_lag_1, sales_lag_7, sales_lag_28, rolling averages
-   - Promotion and price features: promotion_flag, discount_pct
-   - Store & product meta-features: store_size, category_id, brand_popularity
-   - External features: weather, local events (if available)
-
-5. Model development
-   - Baseline models:
-     - Naive forecast (last value)
-     - Average / moving average
-   - Classical time-series:
-     - SARIMA / ARIMA with seasonal components
-     - ETS models (if applicable)
-   - Machine learning regressors:
-     - XGBoost / LightGBM with lag and calendar features
-     - RandomForest for feature importance inspection
-   - Deep learning:
-     - LSTM / GRU or Temporal Convolutional Networks for long-range dependencies
-     - Seq-to-Seq or Transformer-based time-series models (optional)
-   - Probabilistic forecasting:
-     - Prophet (if quick seasonality handling is desired)
-     - Quantile/regression forests for uncertainty estimates
-
-6. Model validation & hyperparameter tuning
-   - Use time-series-aware validation: expanding window or rolling window CV
-   - Evaluation metrics: RMSE, MAE, MAPE, and business KPIs (e.g., stockouts avoided)
-   - Hyperparameter search: grid search or Bayesian optimization (Optuna)
-
-7. Evaluation & selection
-   - Compare models on hold-out period and aggregated business-level metrics
-   - Check residuals for autocorrelation and structural biases
-   - Verify stability across stores and product categories
-
-Inferences (key findings)
--------------------------
-(Replace with measured metrics and results from your experiments)
-
-- Seasonality & Trend
-  - Sales show a clear weekly seasonality with peaks on weekends (or specify actual pattern).
-  - Monthly/quarterly promotions generate predictable uplifts; holidays create strong positive spikes.
-
-- Promotion impact
-  - Promotion events (X% discount or BOGO) increase units sold by approximately Y% on average,
-    but with A% cannibalization of adjacent weeks.
-
-- Store-level heterogeneity
-  - Store clusters: high-footfall urban stores vs low-volume rural stores behave differently; one-size models underperform.
-  - For high-volume stores, short-term models with more immediate lag features perform best; for low-volume stores, cross-sectional pooling or hierarchical models help.
-
-- Forecast accuracy
-  - Best-performing model: (e.g., LightGBM with lags and calendar features) achieved RMSE = XX, MAPE = YY% on hold-out.
-  - Deep models improved long-horizon forecasts but required significantly more compute and hyperparameter tuning.
-
-- Feature importance
-  - Top predictors: recent sales lags (7d, 28d), promotion flag, trend slope, holiday indicator, price discount.
-
-Significance (business impact)
-------------------------------
-- Inventory optimization
-  - Improved forecasts can reduce stockouts and overstocks, reducing lost sales and carrying cost.
-- Workforce & scheduling
-  - Better weekly/daily predictions inform staffing plans, improving customer service and reducing labor costs.
-- Promotion & pricing strategy
-  - Quantified uplift from promotions helps allocate marketing budget to the most effective campaigns and target stores/products.
-- Revenue planning & procurement
-  - More accurate demand estimates aid procurement and supplier negotiation by reducing emergency restocking.
-
-How to interpret results & next steps
-------------------------------------
-- Plug-in final model into a prediction pipeline to produce daily/weekly forecasts per SKU-store.
-- Monitor model drift and retrain periodically (monthly or triggered by drift detection).
-- Deploy model with prediction intervals to communicate forecast uncertainty to stakeholders.
-- Consider hierarchical or multi-output models if you need joint forecasts across product families.
-
-Results & metrics (placeholders)
--------------------------------
-- Final test RMSE: XX.XX
-- Final test MAPE: YY%
-- Baseline (naive) MAPE: ZZ%
-- Improvement over baseline: (baseline - final) / baseline = AA%
